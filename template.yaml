@@ -49,3 +49,20 @@ Resources:
             RestApiId: !Ref Api
             Path: /shorten
             Method: POST
+
+  ResolveShortUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ResolveShortUrlFunction
+      Handler: app.resolve_handler
+      CodeUri: src/
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: UrlShortenerTable
+      Events:
+        Resolve:
+          Type: Api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /{code}
+            Method: GET
