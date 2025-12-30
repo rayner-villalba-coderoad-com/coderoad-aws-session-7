@@ -12,8 +12,8 @@ Globals:
       Variables:
         TABLE_NAME: UrlShortenerTable
 
-  Resources:
-    Api:
-      Type: AWS::Serverless::Api
-      Properties:
-        StageName: prod
+Resources:
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
