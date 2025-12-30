@@ -13,10 +13,10 @@ Globals:
         TABLE_NAME: UrlShortenerTable
 
 Resources:
-  # Api:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: prod
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
 
   UrlShortenerTable:
     Type: AWS::DynamoDB::Table
@@ -31,4 +31,21 @@ Resources:
           KeyType: HASH
       TimeToLiveSpecification:
         AttributeName: expires_at
-        Enabled: true    
+        Enabled: true
+  
+  CreateShortUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CreateShortUrlFunction
+      Handler: app.create_handler
+      CodeUri: src/
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: UrlShortenerTable
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /shorten
+            Method: POST
